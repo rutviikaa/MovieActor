@@ -21,15 +21,17 @@ namespace MovieActor
             }
             cn.Close();
         }
-        private static bool MainMenu()
+       private static bool MainMenu()
         {
             Console.Clear();
             Console.WriteLine("Choose an option:");
             Console.WriteLine("1) Add Movie details");
             Console.WriteLine("2) Remove Movie details");
-            Console.WriteLine("3) Add Actor details");
-            Console.WriteLine("4) Remove Actor details");
-            Console.WriteLine("5) Exit");
+            Console.WriteLine("3) List of Movies");
+            Console.WriteLine("4) Add Actor details");
+            Console.WriteLine("5) Remove Actor details");
+            Console.WriteLine("6) List of Actors");
+            Console.WriteLine("7) Exit");
             Console.Write("\r\nSelect an option: ");
 
             switch (Console.ReadLine())
@@ -41,12 +43,18 @@ namespace MovieActor
                     RemoveMovie();
                     return true;
                 case "3":
-                    AddActor();
+                    MovieList();
                     return true;
                 case "4":
-                    RemoveActor();
+                    AddActor();
                     return true;
                 case "5":
+                    RemoveActor();
+                    return true;
+                case "6":
+                    ActorList();
+                    return true;
+                case "7":
                     return false;
                 default:
                     return true;
@@ -59,7 +67,7 @@ namespace MovieActor
                 var movie = new Movy();
                 Console.WriteLine($"Enter the movie name which you want to add:"+movie.MovieName);
                 movie.MovieName = Console.ReadLine();
-                var m = (from mv in database.Movies where mv.MovieName == movie.MovieName select mv).SingleOrDefault();
+                var m = database.Movies.SingleOrDefault(t => t.MovieName == movie.MovieName);
                 if (m == null)
                 {
                     database.Movies.Add(movie);
@@ -83,7 +91,7 @@ namespace MovieActor
                 var movie = new Movy();
                 Console.WriteLine($"Enter the movie name which you want to delete:"+movie.MovieName);
                 movie.MovieName = Console.ReadLine();
-                var m = (from mv in database.Movies where mv.MovieName == movie.MovieName select mv).SingleOrDefault();
+                var m = database.Movies.SingleOrDefault(t=> t.MovieName == movie.MovieName);
                 if (m == null)
                 {
                     Console.WriteLine("There is no such movie in the list");
@@ -96,6 +104,27 @@ namespace MovieActor
             }
         }
 
+        private static void MovieList()
+        {
+            using (var database = new Model1())
+            {
+                var movielist = database.Movies;
+                {
+                    try
+                    {
+                        foreach (var movie in movielist)
+                        {
+                            Console.WriteLine("List of Movies - " + movie.MovieName);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                }
+            }
+        }
+
         private static void AddActor()
         {
             using (var database = new Model1())
@@ -103,7 +132,7 @@ namespace MovieActor
                 var actor = new Actor();
                 Console.WriteLine($"Enter the actor name which you want to add:" + actor.ActorName);
                 actor.ActorName = Console.ReadLine();
-                var a = (from act in database.Actors where act.ActorName == actor.ActorName select act).SingleOrDefault();
+                var a = database.Actors.SingleOrDefault(t=>t.ActorName == actor.ActorName);
                 if (a == null)
                 {
                     database.Actors.Add(actor);
@@ -125,7 +154,7 @@ namespace MovieActor
                 var actor = new Actor();
                 Console.WriteLine($"Enter the actor name which you want to delete:"+actor.ActorName);
                 actor.ActorName = Console.ReadLine();
-                var a = (from act in database.Actors where act.ActorName == actor.ActorName select act).SingleOrDefault();
+                var a = database.Actors.SingleOrDefault(t=>t.ActorName == actor.ActorName);
                 if (a == null)
                 {
                     Console.WriteLine("There is no such actor in the list");
@@ -135,6 +164,27 @@ namespace MovieActor
                 database.Actors.Remove(actor);
                 database.SaveChanges();
                 Console.WriteLine("Actor removed from the list");
+            }
+        }
+
+        private static void ActorList()
+        {
+            using (var database = new Model1())
+            {
+                var actorlist = database.Actors;
+                {
+                    try
+                    {
+                        foreach (var actor in actorlist)
+                        {
+                            Console.WriteLine("List of Actors - " + actor.ActorName);
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                }
             }
         }
     }
