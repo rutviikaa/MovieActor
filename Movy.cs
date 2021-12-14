@@ -21,6 +21,10 @@ namespace MovieActor
         [StringLength(20)]
         public string MovieName { get; set; }
 
+        [Required]
+        [StringLength(20)]
+        public string MovieTitle { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Actor> Actors { get; set; }
     }
