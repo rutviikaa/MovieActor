@@ -15,7 +15,6 @@ namespace MovieActor
         }
 
         [Key]
-        [Required]
         public int MovieId { get; set; }
 
         [Required]
