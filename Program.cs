@@ -33,6 +33,7 @@ namespace MovieActor
             Console.WriteLine("6) List of Actors");
             Console.WriteLine("7) Exit");
             Console.Write("\r\nSelect an option: ");
+            Console.WriteLine("Choose an option:1");
 
             switch (Console.ReadLine())
             {
